@@ -27,7 +27,7 @@ async def bot_start(message: types.Message):
         media.attach_photo(types.InputFile('./photos/mask1.jpg'), 'До стиля')
         media.attach_photo(types.InputFile('./photos/picasso.jpg'), 'Стиль')
         media.attach_photo(types.InputFile('./photos/mask2.jpg'), 'После переноса стиля')
-        await message.reply_media_group(media=media)
+        await message.answer_media_group(media=media)
 
     await message.answer(f"Теперь пришли мне две фотографии в формате jpg.\n"
                          f"Первая которую будем стилизовать, вторая сам стиль.\n"
