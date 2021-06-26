@@ -53,8 +53,9 @@ class Normalization(nn.Module):
 
 class Transformation:
 
-    def __init__(self, style_power, image_size, chat_id):
+    def __init__(self, style_power, image_size, chat_id, epoch):
         self.chat_id = chat_id
+        self.num_steps = epoch
         self.image_size = image_size
         self.style_power = style_power
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -149,7 +150,7 @@ class Transformation:
         return optimizer
 
     def run_style_transfer(self, cnn, normalization_mean, normalization_std,
-                           content_img, style_img, input_img, num_steps=200,
+                           content_img, style_img, input_img, num_steps=self.num_steps,
                            style_weight=1000000, content_weight=1):
         """Run the style transfer."""
         print(f'Style_weight={style_weight}\nKernel={self.image_size}\nBuilding the style transfer model.. ')
