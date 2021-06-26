@@ -76,7 +76,8 @@ class Transformation:
                                          self.cnn_normalization_mean,
                                          self.cnn_normalization_std,
                                          content_img, style_img, input_img,
-                                         style_weight=self.image_size ** self.style_power // 10)
+                                         style_weight=self.image_size ** self.style_power // 10,
+                                         num_steps=self.num_steps)
         out_size = size_of_original[0]
         if size_of_original[0] > size1 or size_of_original[1] > size2:
             output = functional.resize(output, out_size, antialias=True)
@@ -150,7 +151,7 @@ class Transformation:
         return optimizer
 
     def run_style_transfer(self, cnn, normalization_mean, normalization_std,
-                           content_img, style_img, input_img, num_steps=self.num_steps,
+                           content_img, style_img, input_img, num_steps=200,
                            style_weight=1000000, content_weight=1):
         """Run the style transfer."""
         print(f'Style_weight={style_weight}\nKernel={self.image_size}\nBuilding the style transfer model.. ')
