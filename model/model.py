@@ -62,7 +62,7 @@ class Transformation:
         self.cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(self.device)
         self.cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(self.device)
         # torch.save(models.vgg19(pretrained=True).features.to(self.device).eval(), './model/vgg19.pt')
-        self.cnn = torch.load('./model/vgg19.pt')
+        self.cnn = torch.load('./model/vgg19.pt').to(self.device)
 
     def image_loader(self, image_name, size1=None, size2=None, content=True):
         image = Image.open(image_name)
