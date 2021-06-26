@@ -41,18 +41,16 @@ async def bot_start(message: types.Message):
 async def get_photo(message: Message):
     global start
     global power
-
-    chat_id = message.chat.id
     path_to_download = Path().joinpath("photos")
     path_to_download.mkdir(parents=True, exist_ok=True)
     if start:
-        path_to_download = path_to_download.joinpath(f'content{chat_id}.jpg')
+        path_to_download = path_to_download.joinpath('content.jpg')
         await message.photo[-1].download(destination=path_to_download)
         await message.answer(f"Фото для обработки было сохранено в путь: {path_to_download}")
         await message.answer(f"Теперь загрузи картинку стиля")
         start = False
     else:
-        path_to_download = path_to_download.joinpath(f'style{chat_id}.jpg')
+        path_to_download = path_to_download.joinpath('style.jpg')
         await message.photo[-1].download(destination=path_to_download)
         await message.answer(f"Фото стиля было сохранено в путь: {path_to_download}")
         await message.answer(f"Теперь выбери силу стиля (используй клавиатуру бота)", reply_markup=menu)
@@ -86,19 +84,15 @@ async def get_style1(message: Message):
         if str(device) == "cpu":
             await message.answer(f"Видеокарта не обнаружена, расчет ведется на CPU.\n"
                                  f"Придется подождать...")
-            kernel = 200
         elif str(device) == "cuda":
             await message.answer(f"Видеокарта обнаружена, расчет ведется на GPU.")
-            kernel = 400
-            torch.cuda.empty_cache()
-
         chat_id = message.chat.id
         print(chat_id)
-        model = Transformation(style_power, kernel, chat_id)
-        content = Path().joinpath(f"./photos/content{chat_id}.jpg")
-        style = Path().joinpath(f"./photos/style{chat_id}.jpg")
+        model = Transformation(style_power, 350, chat_id)
+        content = Path().joinpath("./photos/content.jpg")
+        style = Path().joinpath("./photos/style.jpg")
         model.processing(content, style)
-        with open(f'./photos/out{chat_id}.jpg', 'rb') as photo:
+        with open('./photos/out.jpg', 'rb') as photo:
             await bot.send_photo(message.chat.id, photo,
                                  caption=f'Результат применения стиля.\n')
             await message.answer(f'Хочешь попробовать еще c новыми фотками /start\n'
@@ -110,9 +104,8 @@ async def get_style1(message: Message):
 
 @dp.message_handler(Command('exit'))
 async def go_out(message: Message):
-    chat_id = message.chat.id
     try:
-        for file in [f'./photos/content{chat_id}.jpg', f'./photos/out{chat_id}.jpg', f'./photos/style{chat_id}.jpg']:
+        for file in ['./photos/content.jpg', './photos/out.jpg', './photos/style.jpg']:
             Path(file).unlink()
             await message.answer(f"{file} - удален")
 

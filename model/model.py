@@ -64,6 +64,21 @@ class Transformation:
         # torch.save(models.vgg19(pretrained=True).features.to(self.device).eval(), './model/vgg19.pt')
         self.cnn = torch.load('./model/vgg19.pt').to(self.device)
 
+    def image_loader(self, image_name, size1=None, size2=None, content=True):
+        image = Image.open(image_name)
+        if content:
+            loader = transforms.Compose([
+                transforms.Resize(self.image_size),
+                # transforms.CenterCrop(self.size_in),
+                transforms.ToTensor()])
+        else:
+            loader = transforms.Compose([
+                transforms.Resize((size1, size2)),
+                # transforms.CenterCrop(self.size_in),
+                transforms.ToTensor()])
+        image = loader(image).unsqueeze(0)
+        return image.to(self.device, torch.float)
+
     def processing(self, content, style):
         size_of_original = Image.open(content).size
         content_img = self.image_loader(content, content=True)
@@ -81,20 +96,7 @@ class Transformation:
             output = functional.resize(output, out_size, antialias=True)
             t = transforms.transforms.GaussianBlur(11, sigma=(0.1, 2.0))
             output = t(output)
-        return save_image(output, f"./photos/out{self.chat_id}.jpg")
-
-    def image_loader(self, image_name, size1=None, size2=None, content=True):
-        image = Image.open(image_name)
-        if content:
-            loader = transforms.Compose([
-                transforms.Resize(self.image_size),
-                transforms.ToTensor()])
-        else:
-            loader = transforms.Compose([
-                transforms.Resize((size1, size2)),
-                transforms.ToTensor()])
-        image = loader(image).unsqueeze(0)
-        return image.to(self.device, torch.float)
+        return save_image(output, "./photos/out.jpg")
 
     def get_style_model_and_losses(self, cnn, normalization_mean, normalization_std,
                                    style_img, content_img,
@@ -152,7 +154,7 @@ class Transformation:
                            content_img, style_img, input_img, num_steps=200,
                            style_weight=1000000, content_weight=1):
         """Run the style transfer."""
-        print(f'Style_weight={style_weight}\nKernel={self.image_size}\nBuilding the style transfer model.. ')
+        print(f'Style_weight={style_weight}\nBuilding the style transfer model.. ')
         model, style_losses, content_losses = self.get_style_model_and_losses(cnn,
                                                                               normalization_mean, normalization_std,
                                                                               style_img, content_img)
@@ -195,3 +197,5 @@ class Transformation:
             optimizer.step(closure)
         input_img.data.clamp_(0, 1)
         return input_img
+
+
