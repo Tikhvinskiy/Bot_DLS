@@ -88,7 +88,7 @@ async def get_style1(message: Message):
             await message.answer(f"Видеокарта обнаружена, расчет ведется на GPU.")
         chat_id = message.chat.id
         print(chat_id)
-        model = Transformation(style_power, 250, chat_id)
+        model = Transformation(style_power, 512, chat_id)
         content = Path().joinpath("./photos/content.jpg")
         style = Path().joinpath("./photos/style.jpg")
         model.processing(content, style)
