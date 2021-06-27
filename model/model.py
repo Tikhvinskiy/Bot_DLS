@@ -183,7 +183,7 @@ class Transformation:
 
                 run[0] += 1
                 if run[0] % 50 == 0:
-                    request = f"https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={self.chat_id}&text=Сделанно {run[0]} шагов из {num_steps}"
+                    request = f"https://api.telegram.org/bot{config.BOT_TOKEN}/sendMessage?chat_id={self.chat_id}&text=Сделано {run[0]} шагов из {num_steps}"
                     try:
                         requests.get(request, timeout=1)
                     except Exception:
