@@ -90,8 +90,8 @@ async def get_style1(message: Message):
             epoch = 200
         elif str(device) == "cuda":
             await message.answer(f"Видеокарта обнаружена, расчет ведется на GPU.")
-            kernel = 400
-            epoch = 300
+            kernel = 1500
+            epoch = 250
             torch.cuda.empty_cache()
 
         chat_id = message.chat.id
@@ -99,7 +99,12 @@ async def get_style1(message: Message):
         model = Transformation(style_power, kernel, chat_id, epoch)
         content = Path().joinpath(f"./photos/content{chat_id}.jpg")
         style = Path().joinpath(f"./photos/style{chat_id}.jpg")
-        model.processing(content, style)
+        try:
+            model.processing(content, style)
+        except Exception:
+            torch.cuda.empty_cache()
+            torch.cuda.ipc_collect()
+
         with open(f'./photos/out{chat_id}.jpg', 'rb') as photo:
             await bot.send_photo(message.chat.id, photo,
                                  caption=f'Результат применения стиля.\n')
@@ -122,3 +127,4 @@ async def go_out(message: Message):
         await message.answer(f"{er}")
 
     await message.answer("Пока!")
+    await bot.logout()
