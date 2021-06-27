@@ -81,7 +81,7 @@ async def get_style1(message: Message):
         elif message.text == "сюр":
             style_power = 5
 
-        kernel = 200
+        kernel = 250
         epoch = 200
         device = 'cpu'
         # нестабильно CUDA на сервере работала, отключил
