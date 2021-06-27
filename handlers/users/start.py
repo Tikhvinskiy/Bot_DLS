@@ -90,8 +90,8 @@ async def get_style1(message: Message):
             epoch = 200
         elif str(device) == "cuda":
             await message.answer(f"Видеокарта обнаружена, расчет ведется на GPU.")
-            kernel = 3000
-            epoch = 250
+            kernel = 3500
+            epoch = 200
             torch.cuda.empty_cache()
 
         chat_id = message.chat.id
@@ -104,6 +104,7 @@ async def get_style1(message: Message):
         except Exception:
             torch.cuda.empty_cache()
             torch.cuda.ipc_collect()
+            await message.answer(f'Что-то пошло не так, попробуй еще')
 
         with open(f'./photos/out{chat_id}.jpg', 'rb') as photo:
             await bot.send_photo(message.chat.id, photo,
