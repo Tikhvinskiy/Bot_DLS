@@ -90,7 +90,7 @@ async def get_style1(message: Message):
             epoch = 200
         elif str(device) == "cuda":
             await message.answer(f"Видеокарта обнаружена, расчет ведется на GPU.")
-            kernel = 350
+            kernel = 300
             epoch = 200
             torch.cuda.empty_cache()
 
