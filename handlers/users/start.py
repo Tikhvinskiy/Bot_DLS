@@ -81,22 +81,26 @@ async def get_style1(message: Message):
         elif message.text == "сюр":
             style_power = 5
 
-        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print(device)
-        if str(device) == "cpu":
-            await message.answer(f"Видеокарта не обнаружена, расчет ведется на CPU.\n"
-                                 f"Придется подождать...")
-            kernel = 200
-            epoch = 200
-        elif str(device) == "cuda":
-            await message.answer(f"Видеокарта обнаружена, расчет ведется на GPU.")
-            kernel = 300
-            epoch = 200
-            torch.cuda.empty_cache()
+        kernel = 200
+        epoch = 200
+        device = 'cpu'
+        # нестабильно CUDA на сервере работала, отключил
+        # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        # print(device)
+        # if str(device) == "cpu":
+        #     await message.answer(f"Видеокарта не обнаружена, расчет ведется на CPU.\n"
+        #                          f"Придется подождать...")
+        #     kernel = 200
+        #     epoch = 200
+        # elif str(device) == "cuda":
+        #     await message.answer(f"Видеокарта обнаружена, расчет ведется на GPU.")
+        #     kernel = 300
+        #     epoch = 200
+        #     torch.cuda.empty_cache()
 
         chat_id = message.chat.id
         print(chat_id)
-        model = Transformation(style_power, kernel, chat_id, epoch)
+        model = Transformation(style_power, kernel, chat_id, epoch, device)
         content = Path().joinpath(f"./photos/content{chat_id}.jpg")
         style = Path().joinpath(f"./photos/style{chat_id}.jpg")
         try:

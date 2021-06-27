@@ -53,12 +53,12 @@ class Normalization(nn.Module):
 
 class Transformation:
 
-    def __init__(self, style_power, image_size, chat_id, epoch):
+    def __init__(self, style_power, image_size, chat_id, epoch, device):
         self.chat_id = chat_id
         self.num_steps = epoch
         self.image_size = image_size
         self.style_power = style_power
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = device
         self.unloader = transforms.ToPILImage()
         self.cnn_normalization_mean = torch.tensor([0.485, 0.456, 0.406]).to(self.device)
         self.cnn_normalization_std = torch.tensor([0.229, 0.224, 0.225]).to(self.device)
