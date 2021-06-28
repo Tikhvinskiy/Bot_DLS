@@ -71,19 +71,20 @@ async def get_style1(message: Message):
     await asyncio.sleep(1)
     if power:
         await message.answer(f"Вы выбрали силу переноса стиля '{message.text}'.")
-        style_power = 3
+        style_power = 500000
         if message.text == "слабо":
-            style_power = 1.3
+            style_power = 2000
         elif message.text == "больше":
-            style_power = 2
+            style_power = 10000
         elif message.text == "много":
-            style_power = 4
+            style_power = 3000000
         elif message.text == "сюр":
-            style_power = 5
+            style_power = 10000000
 
         kernel = 250
         epoch = 200
         device = 'cpu'
+
         # нестабильно CUDA на сервере работала, отключил
         # device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         # print(device)
@@ -94,7 +95,7 @@ async def get_style1(message: Message):
         #     epoch = 200
         # elif str(device) == "cuda":
         #     await message.answer(f"Видеокарта обнаружена, расчет ведется на GPU.")
-        #     kernel = 400
+        #     kernel = 512
         #     epoch = 300
         #     torch.cuda.empty_cache()
 

@@ -76,7 +76,7 @@ class Transformation:
                                          self.cnn_normalization_mean,
                                          self.cnn_normalization_std,
                                          content_img, style_img, input_img,
-                                         style_weight=self.image_size ** self.style_power // 10,
+                                         style_weight=self.style_power,
                                          num_steps=self.num_steps)
         out_size = size_of_original[0]
         if size_of_original[0] > size1 or size_of_original[1] > size2:
