@@ -77,7 +77,7 @@ async def get_style1(message: Message):
         elif message.text == "больше":
             style_power = 10000
         elif message.text == "много":
-            style_power = 3000000
+            style_power = 2000000
         elif message.text == "сюр":
             style_power = 10000000
 
