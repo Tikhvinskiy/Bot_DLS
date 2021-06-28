@@ -52,7 +52,6 @@ class Normalization(nn.Module):
 
 
 class Transformation:
-
     def __init__(self, style_power, image_size, chat_id, epoch, device):
         self.chat_id = chat_id
         self.num_steps = epoch
